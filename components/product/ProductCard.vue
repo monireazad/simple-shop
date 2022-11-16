@@ -3,6 +3,20 @@
     max-width="374"
     class="productCard rounded-lg d-flex flex-column align-center"
   >
+    <v-btn
+      v-if="isAdmin"
+      color="pink"
+      fab
+      dark
+      small
+      absolute
+      top
+      left
+      stop
+      @click.prevent="deleteProduct(id)"
+    >
+      <v-icon>mdi-delete</v-icon>
+    </v-btn>
 
     <v-img
       height="300"
@@ -10,6 +24,7 @@
       :src="image"
       class="img"
     ></v-img>
+
 
     <v-card-title class="font-weight-black">{{ title }}</v-card-title>
 
@@ -24,7 +39,7 @@ export default {
   name: 'ProductCard',
   props: {
     id: {
-      type: Number,
+      type: String,
       require: true,
     },
     image: {
@@ -39,10 +54,20 @@ export default {
     price: {
       type: String,
       require: true,
+    },
+    isAdmin: {
+      type: Boolean,
+      require: false,
+      default: false,
     }
   },
   data() {
     return {}
+  },
+  methods: {
+    deleteProduct(id){
+      this.$emit("deleteProduct" , id);
+    }
   },
 }
 </script>

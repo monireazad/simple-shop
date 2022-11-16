@@ -1,12 +1,15 @@
 <template>
     <v-row>
-      <v-col cols="12" md="4" v-for="product in products" :key="product.id">
-        <nuxt-link class="pro-link" :to="`/products/${product.id}`">
+      <v-col cols="12" md="4" v-for="(product , index) in products" :key="index">
+        <nuxt-link class="pro-link" :to="isAdmin ? `/admin/${product.id}` : `/products/${product.id}`">
           <product-card
             :id="product.id"
-            :image="product.image"
+            :image="product.images[0]"
             :title="product.title"
-            :price="product.price"/>
+            :price="product.price"
+            :is-admin="isAdmin"
+            @deleteProduct="deleteProduct(index)"
+          />
         </nuxt-link>
       </v-col>
     </v-row>
@@ -22,12 +25,22 @@ export default {
     products: {
       type: Array,
       require: true,
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+      require: false,
     }
   },
   data() {
     return {
     }
   },
+  methods: {
+    deleteProduct(id){
+      this.$store.dispatch("removeProducts" , this.products[id])
+    },
+  }
 }
 </script>
 

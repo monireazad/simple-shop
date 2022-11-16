@@ -4,11 +4,11 @@
       <v-col cols="12" md="6" class="right">
         <v-row>
           <v-col cols="12">
-            <img class="headset" :src="this.mainImage">
+            <img class="headset" :src="this.images[0]">
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="3" v-for="(image,index) in subImages" :key="index">
+          <v-col cols="3" v-for="(image,index) in images" :key="index">
             <img class="headset" :src="image">
           </v-col>
         </v-row>
@@ -55,16 +55,13 @@ export default {
       type: String,
       require: true,
     },
-    mainImage: {
-      type: String,
-      require: false,
-      default: "/images/image-placeholder.gif",
-    },
-    subImages: {
+    images: {
       type: Array,
       require: false,
-      default: ["/images/image-placeholder.gif","/images/image-placeholder.gif"],
-    }
+      default() {
+        return ["/images/image-placeholder.gif" , "/images/image-placeholder.gif"]
+      },
+    },
   },
   data() {
     return {}

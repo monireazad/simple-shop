@@ -49,6 +49,11 @@ export default {
           title: 'سبد خرید',
           to: '/cart',
         },
+        {
+          icon: 'mdi-account',
+          title: 'ادمین سایت',
+          to: '/admin',
+        },
       ],
     }
   },

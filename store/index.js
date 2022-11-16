@@ -1,7 +1,8 @@
 import Vuex from 'vuex'
-import data from '@/api/data.json'
+// import data from '@/api/data.json'
 
 let ordersList = []
+let data = []
 
 export default () => {
   return new Vuex.Store({
@@ -23,23 +24,49 @@ export default () => {
         state.orders = [...orders]
       },
 
-      removeOrders(state, orders){
+      removeOrders(state, orders) {
         state.orders = orders
       },
     },
 
     actions: {
-      nuxtServerInit(vuexContext, context) {
-        return new Promise((resolve) => {
-          vuexContext.commit('setProducts', data)
-          resolve()
-        })
+      setProducts({commit}, product) {
+        const index = data.findIndex(
+          (item) => item.id == product.id
+        )
+        if (index > -1) {
+          data[index] = product
+        } else {
+          data.push(product)
+        }
+        localStorage.setItem('_products', JSON.stringify(data))
+        commit('setProducts', data)
+      },
+
+      initProducts({commit}) {
+        const products = JSON.parse(localStorage.getItem('_products'))
+        if (products) {
+          data = [...products]
+          commit('setProducts', products)
+        }
+      },
+
+      removeProducts({commit}, removeItem) {
+        const products = JSON.parse(localStorage.getItem('_products'))
+        if (products){
+          const index = products.findIndex(
+            (item) => item.id == removeItem.id
+          )
+          products.splice(index, 1)
+          commit('setProducts', products)
+          localStorage.setItem('_products', JSON.stringify(products))
+        }
       },
 
       setOrders({commit}, product) {
         const index = ordersList.findIndex(
-          (item) => item.id === product.id
-        );
+          (item) => item.id == product.id
+        )
         if (index > -1) {
           ordersList[index] = product
         } else {
@@ -58,11 +85,11 @@ export default () => {
         }
       },
 
-      removeOrders({commit} , removeItem){
+      removeOrders({commit}, removeItem) {
         const index = ordersList.findIndex(
           (item) => item.id === removeItem.id
         )
-        ordersList.splice(index , 1)
+        ordersList.splice(index, 1)
         console.log(ordersList)
         commit('removeOrders', ordersList)
         localStorage.setItem('_orders', JSON.stringify(ordersList))

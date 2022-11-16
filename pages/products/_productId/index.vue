@@ -4,8 +4,7 @@
       :title="product.title"
       :description="product.desc"
       :price="product.price"
-      :main-image="product.image"
-      :sub-images="product.subImage"
+      :images="product.images"
       @add-cart="addToCart"
     />
   </div>
@@ -33,7 +32,13 @@ export default {
   },
   computed: {
     product() {
-      return this.$store.getters.listOfProduct[this.$nuxt.context.params.productId - 1]
+      const index = this.$store.getters.listOfProduct.findIndex(
+        (item) => item.id == this.$nuxt.context.params.productId
+      )
+      if (index > -1){
+        console.log(index)
+        return this.$store.getters.listOfProduct[index]
+      }
     }
   },
 

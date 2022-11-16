@@ -23,6 +23,8 @@ export default {
   created() {
     if (process.client){
       this.$store.dispatch("initOrders")
+      this.$store.dispatch("initProducts")
+
     }
   }
 }
