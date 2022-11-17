@@ -21,7 +21,7 @@
               {{ this.description }}
             </div>
             <div class="price">
-              {{ this.price }}
+              {{ this.reformatPrice }}
             </div>
           </div>
 
@@ -69,6 +69,11 @@ export default {
   methods: {
     addToCart() {
       this.$emit("add-cart");
+    }
+  },
+  computed: {
+    reformatPrice(){
+      return this.price.toLocaleString()
     }
   }
 }

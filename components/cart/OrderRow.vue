@@ -7,7 +7,7 @@
         </v-col>
         <v-col cols="9" class="inform">
           <p>{{ order.title }}</p>
-          <p>{{ order.price }}</p>
+          <p>{{ order.price.toLocaleString() }}</p>
           <div class="quantity">
             <div class="qty-minus" @click="changeQty('minus' , index)">-</div>
             <div class="qty">{{ order.orderNum }}</div>
@@ -18,12 +18,14 @@
           <v-icon class="del" color="red" @click="deleteRow(index)">mdi-delete</v-icon>
         </v-col>
       </v-row>
+      <v-divider></v-divider>
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  name: "OrderRow",
   props: {
     orders: {
       type: Array,

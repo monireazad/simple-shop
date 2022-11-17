@@ -12,7 +12,7 @@
             <v-text-field
               type="text"
               label="قیمت محصول"
-              v-model="newProduct.price"
+              v-model.number="newProduct.price"
             ></v-text-field>
             <v-textarea
               type="text"
@@ -102,8 +102,6 @@ export default {
     savePhoto(files){
       for (const file in files) {
         this.newProduct.images.push(`/images/${files[file].name}`)
-        // this.newProduct.images.push(URL.createObjectURL(files[file]))
-        // console.log(URL.createObjectURL(files[file]))
       }
     },
   },

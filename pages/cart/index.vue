@@ -1,22 +1,25 @@
 <template>
   <v-card
     elevation="5"
-    class="ma-5 pt-2"
+    class="ma-5 pt-2 pb-8"
+    height="80vh"
   >
-    <template v-if="orders.length > 0">
-      <product-row :orders="orders"/>
-    </template>
+    <div class="order-container" v-if="orders.length > 0" >
+      <order-row :orders="orders"/>
+      <cart-action-btn/>
+    </div>
     <div v-else class="empty">سبد خرید شما خالی است.</div>
 
   </v-card>
 </template>
 
 <script>
-import ProductRow from "~/components/cart/ProductRow";
+import CartActionBtn from "~/components/cart/CartActionBtn";
+import OrderRow from "~/components/cart/OrderRow";
 
 export default {
   name: 'CartPage',
-  components: {ProductRow},
+  components: {OrderRow, CartActionBtn},
   data() {
     return {
       isOrder: false,
@@ -42,7 +45,14 @@ export default {
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 70vh;
-
+  height: 100%;
+}
+.v-card{
+  overflow: hidden;
+}
+.order-container{
+  width: 100%;
+  height: 100%;
+  overflow: auto;
 }
 </style>

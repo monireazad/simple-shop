@@ -29,7 +29,7 @@
     <v-card-title class="font-weight-black">{{ title }}</v-card-title>
 
     <v-card-text>
-      <div class="price text-center font-weight-bold text-h6">{{ price }}</div>
+      <div class="price text-center font-weight-bold text-h6">{{ reformatPrice }} تومان</div>
     </v-card-text>
   </v-card>
 </template>
@@ -52,7 +52,7 @@ export default {
       require: true,
     },
     price: {
-      type: String,
+      type: Number,
       require: true,
     },
     isAdmin: {
@@ -67,8 +67,13 @@ export default {
   methods: {
     deleteProduct(id){
       this.$emit("deleteProduct" , id);
-    }
+    },
   },
+  computed: {
+    reformatPrice(){
+      return this.price.toLocaleString()
+    }
+  }
 }
 </script>
 
