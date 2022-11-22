@@ -4,27 +4,26 @@
     class="ma-5 pt-2 pb-8"
     height="80vh"
   >
-    <div class="order-container" v-if="orders.length > 0" >
-      <order-row :orders="orders"/>
-      <cart-action-btn/>
+    <div class="order-container" v-if="this.$route.fullPath == '/cart'">
+      <template v-if="orders.length > 0" >
+        <orders-sheet :orders="orders"/>
+      </template>
+      <h1 v-else class="empty">سبد خرید شما خالی است.</h1>
     </div>
-    <div v-else class="empty">سبد خرید شما خالی است.</div>
+    <div v-else-if="this.$route.fullPath == '/cart#location'">
+          <location-sheet/>
+    </div>
 
   </v-card>
 </template>
 
 <script>
-import CartActionBtn from "~/components/cart/CartActionBtn";
-import OrderRow from "~/components/cart/OrderRow";
+import OrdersSheet from "~/components/cart/OrdersSheet";
+import LocationSheet from "~/components/cart/location/LocationSheet";
 
 export default {
   name: 'CartPage',
-  components: {OrderRow, CartActionBtn},
-  data() {
-    return {
-      isOrder: false,
-    }
-  },
+  components: {LocationSheet, OrdersSheet},
   computed: {
     orders() {
       return this.$store.getters.orders
@@ -46,9 +45,6 @@ export default {
   justify-content: center;
   width: 100%;
   height: 100%;
-}
-.v-card{
-  overflow: hidden;
 }
 .order-container{
   width: 100%;

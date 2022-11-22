@@ -2,6 +2,7 @@ import Vuex from 'vuex'
 // import data from '@/api/data.json'
 
 let ordersList = []
+let finalOrders = []
 let data = []
 
 export default () => {
@@ -9,6 +10,8 @@ export default () => {
     state: {
       listOfProduct: [],
       orders: [],
+      location: {},
+      finalOrders: [],
     },
 
     mutations: {
@@ -27,6 +30,18 @@ export default () => {
       removeOrders(state, orders) {
         state.orders = orders
       },
+
+      setLocation(state, location) {
+        state.location = location
+      },
+
+      setFinalOrders(state, order) {
+        state.finalOrders.push(order)
+      },
+
+      initFinalOrders(state, orders){
+        state.finalOrders = orders
+      }
     },
 
     actions: {
@@ -53,7 +68,7 @@ export default () => {
 
       removeProducts({commit}, removeItem) {
         const products = JSON.parse(localStorage.getItem('_products'))
-        if (products){
+        if (products) {
           const index = products.findIndex(
             (item) => item.id == removeItem.id
           )
@@ -94,6 +109,42 @@ export default () => {
         commit('removeOrders', ordersList)
         localStorage.setItem('_orders', JSON.stringify(ordersList))
       },
+
+      setLocation({commit}, location) {
+        commit('setLocation', location)
+        localStorage.setItem('_location', JSON.stringify(location))
+      },
+
+      initLocation({commit}) {
+        const location = JSON.parse(localStorage.getItem('_location'))
+        if (location) {
+          commit('setLocation', location)
+        }
+      },
+
+      setFinalOrders({commit}) {
+        const orders = JSON.parse(localStorage.getItem('_orders'))
+        const location = JSON.parse(localStorage.getItem('_location'))
+
+        const order = {
+          orders: orders,
+          userInfo: location,
+        }
+        finalOrders.push(order)
+
+        commit('setFinalOrders' , order)
+        ordersList = []
+        localStorage.setItem('_orders', JSON.stringify(ordersList))
+        localStorage.setItem('_finalOrders', JSON.stringify(finalOrders))
+      },
+
+      initFinalOrders({commit}) {
+        const orders = JSON.parse(localStorage.getItem('_finalOrders'))
+        if (orders) {
+          finalOrders = [...orders]
+          commit('initFinalOrders', orders)
+        }
+      },
     },
     getters: {
       listOfProduct(state) {
@@ -102,6 +153,14 @@ export default () => {
 
       orders(state) {
         return state.orders
+      },
+
+      location(state) {
+        return state.location
+      },
+
+      finalOrders(state) {
+        return state.finalOrders
       }
     },
   })

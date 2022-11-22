@@ -79,7 +79,7 @@ export default {
           base: colors.grey.lighten4,
           primary: '#00DC82',
           accent: colors.grey.lighten5,
-          secondary: colors.amber.darken3,
+          secondary: colors.grey.darken3,
           info: colors.teal.lighten1,
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,

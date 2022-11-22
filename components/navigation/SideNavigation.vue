@@ -50,6 +50,11 @@ export default {
           to: '/cart',
         },
         {
+          icon: 'mdi-order-bool-descending-variant',
+          title: 'سفارشات',
+          to: '/orders',
+        },
+        {
           icon: 'mdi-account',
           title: 'ادمین سایت',
           to: '/admin',

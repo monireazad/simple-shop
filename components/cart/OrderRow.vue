@@ -80,7 +80,6 @@ export default {
       }
 
       .qty {
-        width: 20px;
         text-align: center;
       }
 
