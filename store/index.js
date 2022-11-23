@@ -1,5 +1,4 @@
 import Vuex from 'vuex'
-// import data from '@/api/data.json'
 
 let ordersList = []
 let finalOrders = []
@@ -146,22 +145,6 @@ export default () => {
         }
       },
     },
-    getters: {
-      listOfProduct(state) {
-        return state.listOfProduct
-      },
-
-      orders(state) {
-        return state.orders
-      },
-
-      location(state) {
-        return state.location
-      },
-
-      finalOrders(state) {
-        return state.finalOrders
-      }
-    },
+    getters: {},
   })
 }

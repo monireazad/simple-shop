@@ -5,7 +5,7 @@
       class="ma-5 pt-5 pb-8"
       height="80vh"
     >
-      <div v-if="orders.length > 0" class="order-container">
+      <div v-if="isOrder" class="order-container">
         <div v-for="item in orders" :key="item.id">
           <order-card :order="item"/>
         </div>
@@ -24,18 +24,19 @@ export default {
   components: {OrderCard},
   data() {
     return{
-      orders : []
     }
   },
   created() {
     if (process.client) {
       this.$store.dispatch("initFinalOrders")
-      this.orders = this.$store.getters.finalOrders
     }
   },
   computed: {
     orders() {
-      return this.$store.getters.finalOrders
+      return this.$store.state.finalOrders
+    },
+    isOrder() {
+      return this.orders.length > 0
     }
   }
 }

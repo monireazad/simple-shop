@@ -33,6 +33,11 @@
                 </v-col>
               </template>
             </v-row>
+            <v-row class="alert" v-if="validation">
+              <v-col cols="12">
+                <div class="text-center">برخی از فیلد ها پر نشده</div>
+              </v-col>
+            </v-row>
             <div class="py-3 d-flex justify-end">
               <v-btn
                 color="primary"
@@ -77,6 +82,7 @@ export default {
 
   data() {
     return{
+      validation: false,
       newProduct: {
         id: null,
         title: null,
@@ -92,9 +98,13 @@ export default {
 
   methods: {
     onSave(){
-      console.log(this.newProduct)
-      this.$store.dispatch("setProducts" , this.newProduct)
-      this.$router.push("/admin")
+      if (this.newProduct.title === null || this.newProduct.price === null || this.newProduct.images === []){
+        this.validation = true
+      }
+      else {
+        this.$store.dispatch("setProducts", this.newProduct)
+        this.$router.push("/admin")
+      }
     },
     onCancel(){
       this.$router.push("/admin")
@@ -116,5 +126,9 @@ export default {
 </script>
 
 <style scoped>
-
+.alert {
+  color: red;
+  margin: 0;
+  padding: 0;
+}
 </style>

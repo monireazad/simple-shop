@@ -43,12 +43,6 @@
 export default {
   name: "LocationCard",
   components: {},
-
-  data(){
-    return{
-
-    }
-  },
   props: {
     location: {
       type: Object,

@@ -178,17 +178,10 @@ export default {
       }
     }
   },
-  computed: {
-    uniqueId() {
-      const dateString = Date.now().toString(36);
-      const randomness = Math.random().toString(36).substr(2);
-      return dateString + randomness;
-    }
-  }
 }
 </script>
 
-<style>
+<style scoped>
 .alert{
   color: red;
   margin: 0;

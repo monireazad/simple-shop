@@ -13,7 +13,7 @@ export default {
 
   computed: {
     listOfProduct() {
-      return this.$store.getters.listOfProduct
+      return this.$store.state.listOfProduct
     }
   },
 

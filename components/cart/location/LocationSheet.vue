@@ -1,6 +1,6 @@
 <template>
-  <div class="add-container">
-    <div v-if="location.state">
+  <div>
+    <div v-if="isLocation">
       <v-row class="d-flex justify-center my-8">
         <v-col cols="6">
           <location-card
@@ -8,32 +8,6 @@
             @deleteLoc="loadLocation"/>
         </v-col>
       </v-row>
-      <div>
-        <v-btn
-          class="ma-3"
-          color="primary"
-          small
-          dark
-          absolute
-          bottom
-          left
-          @click="nextStep()"
-        >
-          مرحله بعد
-        </v-btn>
-        <v-btn
-          class="ma-3"
-          color="secondary"
-          small
-          dark
-          absolute
-          bottom
-          right
-          @click="lastStep()"
-        >
-          مرحله قبل
-        </v-btn>
-      </div>
     </div>
     <div v-else>
       <div>
@@ -64,50 +38,35 @@ export default {
   components: {LocationCard, LocationDialog},
   data() {
     return {
-      location: {},
       checkedRadio: 0,
     }
   },
-  computed: {
-    location() {
-      return this.$store.getters.location
-    },
+  props: {
+    location: {
+      type : Object,
+      required: true,
+    }
   },
-  created() {
-    if (process.client) {
-      this.$store.dispatch("initLocation")
-      this.location = this.$store.getters.location
+  computed: {
+    isLocation() {
+      return this.location.state
     }
   },
   methods: {
     loadLocation() {
       this.$store.dispatch("initLocation")
-      this.location = this.$store.getters.location
     },
-    nextStep() {
-      this.$router.push("/orders")
-      this.$store.dispatch('setFinalOrders')
-    },
-    lastStep() {
-      this.$router.push("/cart")
-    }
   }
 }
 </script>
 
 <style scoped>
-.add-container {
-  overflow-x: hidden;
-  overflow-y: auto;
-  height: 100%;
-}
-
 .empty {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 60vh;
+  height: 40vh;
 }
 </style>

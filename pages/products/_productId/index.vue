@@ -20,7 +20,7 @@ export default {
   methods: {
     addToCart() {
 
-      const index = this.$store.getters.orders.findIndex(
+      const index = this.$store.state.orders.findIndex(
         (item) => item.id === this.product.id
       );
       if (index > -1) {
@@ -32,12 +32,11 @@ export default {
   },
   computed: {
     product() {
-      const index = this.$store.getters.listOfProduct.findIndex(
+      const index = this.$store.state.listOfProduct.findIndex(
         (item) => item.id == this.$nuxt.context.params.productId
       )
       if (index > -1){
-        console.log(index)
-        return this.$store.getters.listOfProduct[index]
+        return this.$store.state.listOfProduct[index]
       }
     }
   },
