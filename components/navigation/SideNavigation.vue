@@ -1,66 +1,49 @@
 <template>
-    <v-navigation-drawer
-      permanent
-      right
-      app
-      fixed
-      color="accent"
-    >
-      <template v-slot:prepend>
-        <v-card class="logo pa-4 d-flex justify-center" elevation="0" color="transparent">
-          <NuxtLogo />
-        </v-card>
-      </template>
+  <v-navigation-drawer
+    permanent
+    right
+    app
+    fixed
+    color="accent"
+  >
+    <template v-slot:prepend>
+      <v-card class="logo pa-4 d-flex justify-center" elevation="0" color="transparent">
+        <NuxtLogo/>
+      </v-card>
+    </template>
 
-      <v-divider></v-divider>
+    <v-divider></v-divider>
 
-      <v-list dense class="my-2">
-        <v-list-item
-          v-for="item in items"
-          :key="item.title"
-          :to="item.to"
-          class="py-2 my-1"
-        >
-          <v-list-item-icon>
-            <v-icon color="primary">{{ item.icon }}</v-icon>
-          </v-list-item-icon>
+    <v-list dense class="my-2">
+      <v-list-item
+        v-for="item in items"
+        :key="item.title"
+        :to="item.to"
+        class="py-2 my-1"
+      >
+        <v-list-item-icon>
+          <v-icon color="primary">{{ item.icon }}</v-icon>
+        </v-list-item-icon>
 
-          <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
+        <v-list-item-content>
+          <v-list-item-title>{{ item.title }}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list>
+  </v-navigation-drawer>
 </template>
 
 <script>
 export default {
   name: 'SideNavigation',
-  data() {
-    return {
-      items: [
-        {
-          icon: 'mdi-storefront-outline',
-          title: 'محصولات',
-          to: '/products',
-        },
-        {
-          icon: 'mdi-cart',
-          title: 'سبد خرید',
-          to: '/cart',
-        },
-        {
-          icon: 'mdi-order-bool-descending-variant',
-          title: 'سفارشات',
-          to: '/orders',
-        },
-        {
-          icon: 'mdi-account',
-          title: 'ادمین سایت',
-          to: '/admin',
-        },
-      ],
+  props: {
+    items: {
+      type: Array,
+      required: true
     }
+  },
+  data() {
+    return {}
   },
 }
 </script>

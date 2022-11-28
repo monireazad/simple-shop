@@ -13,36 +13,34 @@
 <script>
 import SideNavigation from "~/components/navigation/SideNavigation";
 import TopNavigation from "~/components/navigation/TopNavigation";
-
 export default {
-  name: 'DefaultLayout',
+  name: "admin",
+  middleware: ['checkAuth' , 'auth'],
   components: {TopNavigation, SideNavigation},
   data() {
     return {
       items: [
         {
           icon: 'mdi-storefront-outline',
-          title: 'محصولات',
-          to: '/products',
+          title: 'مدیریت محصولات',
+          to: '/admin/#',
         },
         {
-          icon: 'mdi-cart',
-          title: 'سبد خرید',
-          to: '/cart',
-        },
-        {
-          icon: 'mdi-order-bool-descending-variant',
-          title: 'سفارشات',
-          to: '/orders',
+          icon: 'mdi-package-variant-closed-plus',
+          title: 'افزودن محصول جدید',
+          to: '/admin/new-product',
         },
       ],
     }
   },
   created() {
     if (process.client){
-      this.$store.dispatch("initOrders")
       this.$store.dispatch("initProducts")
     }
   }
 }
 </script>
+
+<style scoped>
+
+</style>

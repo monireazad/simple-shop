@@ -1,13 +1,5 @@
 <template>
   <div>
-    <section class="new-products" v-if="isAdmin">
-      <v-btn
-        color="primary"
-        @click="createPost"
-      >
-        اضافه کردن محصول جدید
-      </v-btn>
-    </section>
     <section class="exist-products">
       <h1 class="py-5">محصولات موجود در فروشگاه</h1>
       <product-list :products="listOfProduct" :is-admin="isAdmin"/>
@@ -21,6 +13,7 @@ import ProductList from "~/components/product/ProductList";
 export default {
   name: 'ProductsPage',
   components: {ProductList},
+  layout: 'admin',
 
   data(){
     return{
@@ -32,15 +25,6 @@ export default {
       return this.$store.state.listOfProduct
     }
   },
-  methods:{
-    createPost(){
-      this.$router.push("/admin/new-product")
-    }
-  }
 
 }
 </script>
-
-<style scoped>
-
-</style>

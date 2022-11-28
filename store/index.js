@@ -1,4 +1,5 @@
 import Vuex from 'vuex'
+import users from '@/api/users.json'
 
 let ordersList = []
 let finalOrders = []
@@ -11,6 +12,7 @@ export default () => {
       orders: [],
       location: {},
       finalOrders: [],
+      token: null,
     },
 
     mutations: {
@@ -38,8 +40,16 @@ export default () => {
         state.finalOrders.push(order)
       },
 
-      initFinalOrders(state, orders){
+      initFinalOrders(state, orders) {
         state.finalOrders = orders
+      },
+
+      login(state, token) {
+        state.token = token
+      },
+
+      logout(state) {
+        state.token = null
       }
     },
 
@@ -131,7 +141,7 @@ export default () => {
         }
         finalOrders.push(order)
 
-        commit('setFinalOrders' , order)
+        commit('setFinalOrders', order)
         ordersList = []
         localStorage.setItem('_orders', JSON.stringify(ordersList))
         localStorage.setItem('_finalOrders', JSON.stringify(finalOrders))
@@ -144,7 +154,45 @@ export default () => {
           commit('initFinalOrders', orders)
         }
       },
+
+      login({commit}, credentials) {
+        const user = users[0]
+        const username = user.username
+        const password = user.password
+        if (credentials.username === username && credentials.password === password) {
+          commit('login', user.token)
+          localStorage.setItem('_token', user.token)
+          this.$cookies.set('jwt', user.token)
+        }
+      },
+
+      initAuth({commit}, request) {
+        let token
+        if (request) {
+          if (request.headers.cookie) {
+            const jwt = request.headers.cookie.split(';').find(c => c.trim().startsWith('jwt='))
+            if (jwt) {
+              token = jwt.split('=')[1]
+            }
+          }
+        } else {
+          token = localStorage.getItem('_token')
+        }
+        if (token) {
+          commit('login', token)
+        }
+      },
+
+      logout({commit}) {
+        localStorage.removeItem('_token')
+        this.$cookies.remove('jwt')
+        commit("logout")
+      },
     },
-    getters: {},
+    getters: {
+      isAuthenticated(state) {
+        return Boolean(state.token)
+      }
+    },
   })
 }
