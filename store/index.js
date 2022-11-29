@@ -1,10 +1,6 @@
 import Vuex from 'vuex'
 import users from '@/api/users.json'
 
-let ordersList = []
-let finalOrders = []
-let data = []
-
 export default () => {
   return new Vuex.Store({
     state: {
@@ -20,15 +16,7 @@ export default () => {
         state.listOfProduct = products
       },
 
-      setOrders(state, order) {
-        state.orders.push(order)
-      },
-
-      initOrders(state, orders) {
-        state.orders = [...orders]
-      },
-
-      removeOrders(state, orders) {
+      setOrders(state, orders) {
         state.orders = orders
       },
 
@@ -54,7 +42,8 @@ export default () => {
     },
 
     actions: {
-      setProducts({commit}, product) {
+      setProducts({commit, state}, product ) {
+        let data = state.listOfProduct
         const index = data.findIndex(
           (item) => item.id == product.id
         )
@@ -70,7 +59,6 @@ export default () => {
       initProducts({commit}) {
         const products = JSON.parse(localStorage.getItem('_products'))
         if (products) {
-          data = [...products]
           commit('setProducts', products)
         }
       },
@@ -87,36 +75,37 @@ export default () => {
         }
       },
 
-      setOrders({commit}, product) {
-        const index = ordersList.findIndex(
+      setOrders({commit, state}, product) {
+        let data = state.orders
+        const index = data.findIndex(
           (item) => item.id == product.id
         )
         if (index > -1) {
-          ordersList[index] = product
+          data[index] = product
         } else {
-          commit('setOrders', product)
-          ordersList.push(product)
+          data.push(product)
         }
-        localStorage.setItem('_orders', JSON.stringify(ordersList))
-
+        localStorage.setItem('_orders', JSON.stringify(data))
+        commit('setOrders', data)
       },
 
       initOrders({commit}) {
         const orders = JSON.parse(localStorage.getItem('_orders'))
         if (orders) {
-          ordersList = [...orders]
-          commit('initOrders', orders)
+          commit('setOrders', orders)
         }
       },
 
       removeOrders({commit}, removeItem) {
-        const index = ordersList.findIndex(
-          (item) => item.id === removeItem.id
-        )
-        ordersList.splice(index, 1)
-        console.log(ordersList)
-        commit('removeOrders', ordersList)
-        localStorage.setItem('_orders', JSON.stringify(ordersList))
+        const orders = JSON.parse(localStorage.getItem('_orders'))
+        if (orders) {
+          const index = orders.findIndex(
+            (item) => item.id === removeItem.id
+          )
+          orders.splice(index, 1)
+          commit('setOrders', orders)
+          localStorage.setItem('_orders', JSON.stringify(orders))
+        }
       },
 
       setLocation({commit}, location) {
@@ -131,7 +120,7 @@ export default () => {
         }
       },
 
-      setFinalOrders({commit}) {
+      setFinalOrders({commit, state}) {
         const orders = JSON.parse(localStorage.getItem('_orders'))
         const location = JSON.parse(localStorage.getItem('_location'))
 
@@ -139,18 +128,14 @@ export default () => {
           orders: orders,
           userInfo: location,
         }
-        finalOrders.push(order)
-
         commit('setFinalOrders', order)
-        ordersList = []
-        localStorage.setItem('_orders', JSON.stringify(ordersList))
-        localStorage.setItem('_finalOrders', JSON.stringify(finalOrders))
+        localStorage.removeItem('_orders')
+        localStorage.setItem('_finalOrders', JSON.stringify(state.finalOrders))
       },
 
       initFinalOrders({commit}) {
         const orders = JSON.parse(localStorage.getItem('_finalOrders'))
         if (orders) {
-          finalOrders = [...orders]
           commit('initFinalOrders', orders)
         }
       },

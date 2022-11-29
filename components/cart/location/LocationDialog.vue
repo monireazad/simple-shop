@@ -29,93 +29,103 @@
         <v-card-title>
           <span class="text-h5">افزودن آدرس جدید</span>
         </v-card-title>
+
         <v-card-text>
-          <v-container>
-            <v-row>
-              <v-col
-                cols="12"
-                md="6"
-              >
-                <v-text-field
-                  label="استان *"
-                  required
-                  dense
-                  v-model="location.state"
-                ></v-text-field>
-              </v-col>
-              <v-col
-                cols="12"
-                md="6"
-              >
-                <v-text-field
-                  label="شهر *"
-                  dense
-                  v-model="location.city"
-                ></v-text-field>
-              </v-col>
-              <v-col
-                cols="12"
-                md="6"
-              >
-                <v-text-field
-                  label="نام *"
-                  required
-                  dense
-                  v-model="location.firstName"
-                ></v-text-field>
-              </v-col>
-              <v-col
-                cols="12"
-                md="6"
-              >
-                <v-text-field
-                  label="نام خانوادگی *"
-                  required
-                  dense
-                  v-model="location.lastName"
-                ></v-text-field>
-              </v-col>
-              <v-col
-                cols="12"
-                md="6"
-              >
-                <v-text-field
-                  label="کدپستی *"
-                  required
-                  dense
-                  v-model="location.postalCode"
-                ></v-text-field>
-              </v-col>
-              <v-col
-                cols="12"
-                md="6"
-              >
-                <v-text-field
-                  label="موبایل *"
-                  required
-                  dense
-                  v-model="location.phone"
-                ></v-text-field>
-              </v-col>
-              <v-col
-                cols="12"
-              >
-                <v-textarea
-                  label="آدرس *"
-                  required
-                  dense
-                  auto-grow
-                  v-model="location.address"
-                ></v-textarea>
-              </v-col>
-            </v-row>
-          </v-container>
+          <v-form
+            ref="form"
+            v-model="valid"
+            lazy-validation
+          >
+            <v-container>
+              <v-row>
+                <v-col
+                  cols="12"
+                  md="6"
+                >
+                  <v-text-field
+                    label="استان *"
+                    :rules="inputRules"
+                    required
+                    dense
+                    v-model="location.state"
+                  ></v-text-field>
+                </v-col>
+                <v-col
+                  cols="12"
+                  md="6"
+                >
+                  <v-text-field
+                    label="شهر *"
+                    :rules="inputRules"
+                    dense
+                    v-model="location.city"
+                  ></v-text-field>
+                </v-col>
+                <v-col
+                  cols="12"
+                  md="6"
+                >
+                  <v-text-field
+                    label="نام *"
+                    :rules="inputRules"
+                    required
+                    dense
+                    v-model="location.firstName"
+                  ></v-text-field>
+                </v-col>
+                <v-col
+                  cols="12"
+                  md="6"
+                >
+                  <v-text-field
+                    label="نام خانوادگی *"
+                    :rules="inputRules"
+                    required
+                    dense
+                    v-model="location.lastName"
+                  ></v-text-field>
+                </v-col>
+                <v-col
+                  cols="12"
+                  md="6"
+                >
+                  <v-text-field
+                    label="کدپستی *"
+                    :rules="inputRules"
+                    required
+                    dense
+                    v-model="location.postalCode"
+                  ></v-text-field>
+                </v-col>
+                <v-col
+                  cols="12"
+                  md="6"
+                >
+                  <v-text-field
+                    label="موبایل *"
+                    :rules="inputRules"
+                    required
+                    dense
+                    v-model="location.phone"
+                  ></v-text-field>
+                </v-col>
+                <v-col
+                  cols="12"
+                >
+                  <v-textarea
+                    label="آدرس *"
+                    :rules="inputRules"
+                    required
+                    dense
+                    auto-grow
+                    v-model="location.address"
+                  ></v-textarea>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-form>
         </v-card-text>
-        <v-row class="alert" v-if="validation">
-          <v-col cols="12">
-            <div class="text-center">برخی از فیلد ها پر نشده</div>
-          </v-col>
-        </v-row>
+
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -142,8 +152,8 @@
 export default {
   name: "LocationDialog",
   data: () => ({
+    valid: true,
     dialog: false,
-    validation: false,
     location: {
       state: null,
       city: null,
@@ -153,6 +163,7 @@ export default {
       phone: null,
       address: null,
     },
+    inputRules: [v => !!v || 'پر کردن این فیلد الزامی است',],
   }),
   props: {
     action: {
@@ -168,7 +179,7 @@ export default {
     saveLocation() {
       if (this.location.state == null || this.location.city == null || this.location.firstName == null ||
           this.location.lastName == null || this.location.phone == null || this.location.address == null){
-        this.validation = true
+        this.$refs.form.validate()
       }
       else {
         this.$store.dispatch("setLocation", this.location)
@@ -180,11 +191,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-.alert{
-  color: red;
-  margin: 0;
-  padding: 0;
-}
-</style>

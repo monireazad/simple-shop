@@ -3,14 +3,20 @@
     <v-layout class="my-5">
       <v-flex sm12 md10 offset-md1>
         <v-card class="pa-3" elevation="4" light tag="section">
-          <v-form class="ma-3">
+          <v-form
+            ref="form"
+            v-model="valid"
+            lazy-validation
+            class="ma-3">
             <v-text-field
               type="text"
+              :rules="inputRules"
               label="نام محصول"
               v-model="newProduct.title"
             ></v-text-field>
             <v-text-field
               type="text"
+              :rules="inputRules"
               label="قیمت محصول"
               v-model.number="newProduct.price"
             ></v-text-field>
@@ -21,6 +27,7 @@
             ></v-textarea>
             <v-file-input
               label="تصویر محصول"
+              :rules="inputRules"
               multiple
               chips
               prepend-icon="mdi-camera"
@@ -32,11 +39,6 @@
                   <img width="100px" :src="image">
                 </v-col>
               </template>
-            </v-row>
-            <v-row class="alert" v-if="validation">
-              <v-col cols="12">
-                <div class="text-center">برخی از فیلد ها پر نشده</div>
-              </v-col>
             </v-row>
             <div class="py-3 d-flex justify-end">
               <v-btn
@@ -82,7 +84,7 @@ export default {
 
   data() {
     return{
-      validation: false,
+      valid: true,
       newProduct: {
         id: null,
         title: null,
@@ -92,14 +94,14 @@ export default {
         orderNum: 1
       },
       files: [],
-
+      inputRules: [v => !!v || 'پر کردن این فیلد الزامی است',],
     }
   },
 
   methods: {
     onSave(){
       if (this.newProduct.title === null || this.newProduct.price === null || this.newProduct.images === []){
-        this.validation = true
+        this.$refs.form.validate()
       }
       else {
         this.$store.dispatch("setProducts", this.newProduct)
@@ -124,11 +126,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.alert {
-  color: red;
-  margin: 0;
-  padding: 0;
-}
-</style>
