@@ -43,17 +43,17 @@ export default () => {
 
     actions: {
       setProducts({commit, state}, product ) {
-        let data = state.listOfProduct
-        const index = data.findIndex(
+        let productList = state.listOfProduct
+        const index = productList.findIndex(
           (item) => item.id == product.id
         )
         if (index > -1) {
-          data[index] = product
+          productList[index] = product
         } else {
-          data.push(product)
+          productList.push(product)
         }
-        localStorage.setItem('_products', JSON.stringify(data))
-        commit('setProducts', data)
+        localStorage.setItem('_products', JSON.stringify(productList))
+        commit('setProducts', productList)
       },
 
       initProducts({commit}) {
@@ -76,17 +76,17 @@ export default () => {
       },
 
       setOrders({commit, state}, product) {
-        let data = state.orders
-        const index = data.findIndex(
+        let orderList = state.orders
+        const index = orderList.findIndex(
           (item) => item.id == product.id
         )
         if (index > -1) {
-          data[index] = product
+          orderList[index] = product
         } else {
-          data.push(product)
+          orderList.push(product)
         }
-        localStorage.setItem('_orders', JSON.stringify(data))
-        commit('setOrders', data)
+        localStorage.setItem('_orders', JSON.stringify(orderList))
+        commit('setOrders', orderList)
       },
 
       initOrders({commit}) {
@@ -174,6 +174,7 @@ export default () => {
         commit("logout")
       },
     },
+
     getters: {
       isAuthenticated(state) {
         return Boolean(state.token)
