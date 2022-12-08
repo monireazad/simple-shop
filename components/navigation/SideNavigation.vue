@@ -19,6 +19,7 @@
         v-for="item in items"
         :key="item.title"
         :to="item.to"
+        exact
         class="py-2 my-1"
       >
         <v-list-item-icon>

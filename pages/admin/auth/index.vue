@@ -7,11 +7,8 @@
 <script>
 import LoginPage from "~/components/admin/LoginForm";
 export default {
-  middleware: 'checkAuth',
+  middleware: 'auth',
   components: {LoginPage}
 }
 </script>
 
-<style scoped>
-
-</style>

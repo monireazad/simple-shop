@@ -19,17 +19,17 @@
       @click="logOut"
       v-if="isAuthenticated"
     >
-      log out
+      logOut
     </v-btn>
   </v-app-bar>
 </template>
 
 <script>
 export default {
-  name: 'TopNavigation',
+  middleware: 'auth',
   methods: {
-    logOut() {
-      this.$store.dispatch("logout")
+    async logOut() {
+      await this.$auth.logout()
       this.$router.push("/products")
     }
   },

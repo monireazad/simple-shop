@@ -1,6 +1,8 @@
 <template>
   <div class="pa-5">
     <product-list :products="listOfProduct"/>
+    <v-row>
+    </v-row>
   </div>
 </template>
 
@@ -13,10 +15,9 @@ export default {
 
   computed: {
     listOfProduct() {
-      return this.$store.state.listOfProduct
+      return this.$store.state.products
     }
   },
-
 }
 </script>
 

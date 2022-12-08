@@ -8,23 +8,24 @@
             v-model="valid"
             lazy-validation
             class="ma-3">
+
             <v-text-field
               type="text"
               :rules="inputRules"
               label="نام محصول"
-              v-model="newProduct.title"
+              v-model="newProduct.name"
             ></v-text-field>
+
+            <editor :content="newProduct.description"/>
+
+            <v-divider class="my-5"></v-divider>
             <v-text-field
               type="text"
               :rules="inputRules"
               label="قیمت محصول"
               v-model.number="newProduct.price"
             ></v-text-field>
-            <v-textarea
-              type="text"
-              label="توضیحات محصول"
-              v-model="newProduct.desc"
-            ></v-textarea>
+
             <v-file-input
               label="تصویر محصول"
               :rules="inputRules"
@@ -33,12 +34,11 @@
               prepend-icon="mdi-camera"
               @change="savePhoto($event)"
             ></v-file-input>
+
             <v-row>
-              <template v-for="(image,index) in newProduct.images">
-                <v-col cols="2" v-if="newProduct.images" :key="index">
-                  <img width="100px" :src="image">
-                </v-col>
-              </template>
+              <v-col cols="2" v-if="newProduct.thumbnail_url">
+                <img width="100px" :src="newProduct.thumbnail_url">
+              </v-col>
             </v-row>
             <div class="py-3 d-flex justify-end">
               <v-btn
@@ -65,9 +65,11 @@
 </template>
 
 <script>
+
+import Editor from "~/components/general/editor";
 export default {
   name: "ProductForm",
-
+  components: {Editor},
   props: {
     product: {
       type: Object,
@@ -77,20 +79,14 @@ export default {
   created() {
     if (this.product){
       this.newProduct = this.product
-    }else {
-      this.newProduct.id = this.uniqueId
     }
+    console.log("sended product => " , this.newProduct)
   },
 
   data() {
     return{
       valid: true,
       newProduct: {
-        id: null,
-        title: null,
-        desc: null,
-        price: null,
-        images: [],
         orderNum: 1
       },
       files: [],
@@ -104,8 +100,9 @@ export default {
         this.$refs.form.validate()
       }
       else {
-        this.$store.dispatch("setProducts", this.newProduct)
-        this.$router.push("/admin")
+        // this.$store.dispatch("setProducts", this.newProduct)
+        // this.$router.push("/admin")
+        console.log(this.newProduct.title)
       }
     },
     onCancel(){
@@ -118,11 +115,7 @@ export default {
     },
   },
   computed: {
-    uniqueId () {
-      const dateString = Date.now().toString(36);
-      const randomness = Math.random().toString(36).substr(2);
-      return dateString + randomness;
-    }
   }
 }
 </script>
+

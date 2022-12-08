@@ -2,27 +2,23 @@
   <div>
     <section class="exist-products">
       <h1 class="py-5">محصولات موجود در فروشگاه</h1>
-      <product-list :products="listOfProduct" :is-admin="isAdmin"/>
+      <product-table :products="listOfProduct"/>
     </section>
   </div>
 </template>
 
 <script>
-import ProductList from "~/components/product/ProductList";
+import ProductTable from "~/components/admin/ProductTable";
 
 export default {
-  name: 'ProductsPage',
-  components: {ProductList},
+  name: 'AdminPage',
+  components: {ProductTable},
   layout: 'admin',
+  middleware: ['auth'],
 
-  data(){
-    return{
-      isAdmin: true,
-    }
-  },
   computed: {
     listOfProduct() {
-      return this.$store.state.listOfProduct
+      return this.$store.state.products
     }
   },
 

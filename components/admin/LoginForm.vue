@@ -33,7 +33,7 @@
               v-model="snackbar"
               color="red darken-3"
             >
-              نام کاربری یا رمز ورود وارد شده صحیح نمیباشد.
+              {{ error }}
 
               <template v-slot:action="{ attrs }">
                 <v-btn
@@ -69,24 +69,28 @@ export default {
     return {
       valid: true,
       snackbar: false,
-      password: null,
-      username: null,
+      password: '',
+      username: '',
+      error: '',
       inputRules: [v => !!v || 'پر کردن این فیلد الزامی است',],
     }
   },
   methods: {
-    login() {
-      if (this.username == null || this.password == null){
-        this.$refs.form.validate()
-      }
-      else {
-        this.$store.dispatch('login', {username: this.username, password: this.password})
-        if (this.$store.getters.isAuthenticated) {
-          this.$router.push('/admin')
-        } else {
-          this.$refs.form.validate()
+    async login() {
+      this.$refs.form.validate()
+      if(this.valid) {
+        try {
+          const response = await this.$axios.$post("/auth/login/admin", {
+            login: this.username,
+            password: this.password
+          })
+          this.$auth.setUserToken(response.token)
+          this.$router.push('/')
+        } catch (e) {
           this.snackbar = true
+          this.error = e.response.data.message
         }
+
       }
     }
   }

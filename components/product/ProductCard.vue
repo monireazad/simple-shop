@@ -39,7 +39,7 @@ export default {
   name: 'ProductCard',
   props: {
     id: {
-      type: String,
+      type: Number,
       require: true,
     },
     image: {

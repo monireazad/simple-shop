@@ -1,19 +1,17 @@
 import Vuex from 'vuex'
-import users from '@/api/users.json'
 
 export default () => {
   return new Vuex.Store({
     state: {
-      listOfProduct: [],
+      products: [],
       orders: [],
       location: {},
       finalOrders: [],
-      token: null,
     },
 
     mutations: {
-      setProducts(state, products) {
-        state.listOfProduct = products
+      getProducts(state , {data}){
+        state.products = data
       },
 
       setOrders(state, orders) {
@@ -31,50 +29,23 @@ export default () => {
       initFinalOrders(state, orders) {
         state.finalOrders = orders
       },
-
-      login(state, token) {
-        state.token = token
-      },
-
-      logout(state) {
-        state.token = null
-      }
     },
 
     actions: {
-      setProducts({commit, state}, product ) {
-        let productList = state.listOfProduct
-        const index = productList.findIndex(
-          (item) => item.id == product.id
-        )
-        if (index > -1) {
-          productList[index] = product
-        } else {
-          productList.push(product)
-        }
-        localStorage.setItem('_products', JSON.stringify(productList))
-        commit('setProducts', productList)
+      async nuxtServerInit({ commit }){
       },
 
-      initProducts({commit}) {
-        const products = JSON.parse(localStorage.getItem('_products'))
-        if (products) {
-          commit('setProducts', products)
-        }
+      async initProducts({ commit }) {
+        const data = await this.$axios.$get('/products')
+        commit('getProducts' , data.entity)
       },
 
-      removeProducts({commit}, removeItem) {
-        const products = JSON.parse(localStorage.getItem('_products'))
-        if (products) {
-          const index = products.findIndex(
-            (item) => item.id == removeItem.id
-          )
-          products.splice(index, 1)
-          commit('setProducts', products)
-          localStorage.setItem('_products', JSON.stringify(products))
-        }
+      async removeProduct({commit , state}, removeItem) {
+        const response = await this.$axios.$delete(`shop/products/${removeItem.id}`)
       },
 
+
+      //--------------
       setOrders({commit, state}, product) {
         let orderList = state.orders
         const index = orderList.findIndex(
@@ -89,8 +60,8 @@ export default () => {
         commit('setOrders', orderList)
       },
 
-      initOrders({commit}) {
-        const orders = JSON.parse(localStorage.getItem('_orders'))
+      async initOrders({commit}) {
+         const orders = await JSON.parse(localStorage.getItem('_orders'))
         if (orders) {
           commit('setOrders', orders)
         }
@@ -140,44 +111,14 @@ export default () => {
         }
       },
 
-      login({commit}, credentials) {
-        const user = users[0]
-        const username = user.username
-        const password = user.password
-        if (credentials.username === username && credentials.password === password) {
-          commit('login', user.token)
-          localStorage.setItem('_token', user.token)
-          this.$cookies.set('jwt', user.token)
-        }
-      },
-
-      initAuth({commit}, request) {
-        let token
-        if (request) {
-          if (request.headers.cookie) {
-            const jwt = request.headers.cookie.split(';').find(c => c.trim().startsWith('jwt='))
-            if (jwt) {
-              token = jwt.split('=')[1]
-            }
-          }
-        } else {
-          token = localStorage.getItem('_token')
-        }
-        if (token) {
-          commit('login', token)
-        }
-      },
-
-      logout({commit}) {
-        localStorage.removeItem('_token')
-        this.$cookies.remove('jwt')
-        commit("logout")
-      },
     },
 
     getters: {
       isAuthenticated(state) {
-        return Boolean(state.token)
+        return state.auth.loggedIn
+      },
+      loggedInUser(state) {
+        return state.auth.user
       }
     },
   })

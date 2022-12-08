@@ -3,25 +3,22 @@
     <v-row>
       <v-col cols="12" md="6" class="right">
         <v-row>
-          <v-col cols="12">
-            <img class="headset" :src="this.images[0]">
-          </v-col>
+          <h2>{{ this.title }}</h2>
         </v-row>
         <v-row>
-          <v-col cols="3" v-for="(image,index) in images" :key="index">
-            <img class="headset" :src="image">
+          <v-col cols="12">
+            <img :src="this.images">
           </v-col>
         </v-row>
       </v-col>
-      <v-col cols="12" md="6">
+    </v-row>
+    <v-row>
+      <v-col cols="12">
         <div class="left">
           <div>
-            <h3 class="product">{{ this.title }}</h3>
-            <div class="desc">
-              {{ this.description }}
-            </div>
+            <div class="desc" v-html="this.description"></div>
             <div class="price">
-              {{ this.reformatPrice }}
+              {{ this.reformatPrice }} تومان
             </div>
           </div>
 
@@ -56,11 +53,9 @@ export default {
       require: true,
     },
     images: {
-      type: Array,
+      type: String,
       require: false,
-      default() {
-        return ["/images/image-placeholder.gif" , "/images/image-placeholder.gif"]
-      },
+      default: "/images/image-placeholder.gif"
     },
   },
   data() {
@@ -97,20 +92,12 @@ export default {
 }
 
 .left {
-  padding: 30px 0;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 
-  .product {
-    font-size: 25pt;
-    font-weight: 500;
-    color: #666;
-  }
-
   .desc {
-    margin-top: 20px;
     color: #777;
   }
 

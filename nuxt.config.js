@@ -11,7 +11,13 @@ export default {
       { hid: 'description', name: 'description', content: '' },
       { name: 'format-detection', content: 'telephone=no' },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      // Iconfonts for Vuetify. You need to leave only which one you use
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons' },
+      { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css' },
+      { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/4.4.95/css/materialdesignicons.min.css' }
+    ],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -20,7 +26,9 @@ export default {
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: [
+    { src: '~/plugins/TiptapVuetify', mode: 'client' }
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -41,12 +49,35 @@ export default {
     // https://go.nuxtjs.dev/content
     '@nuxt/content',
     'cookie-universal-nuxt',
+    '@nuxtjs/auth',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: '/',
+    baseURL: 'https://monirehazad.faryadresan.ir/api/v1',
+  },
+
+  auth: {
+    redirect: {
+      login: '/admin/auth',
+    },
+    strategies: {
+      local: {
+        endpoints: {
+          login: false,
+          user: {
+            url: '/management/users/me',
+            method: 'get',
+            propertyName: false,
+            autoFetch: false,
+          },
+          logout: false,
+        },
+        autoFetchUser: false,
+        tokenType: 'Bearer',
+      },
+    },
   },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
@@ -91,8 +122,9 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
-  router: {
-    // middleware: ''
-  }
+  build: {
+    transpile: ['vuetify/lib', 'tiptap-vuetify']
+  },
+
+  router: {}
 }

@@ -7,8 +7,8 @@
 <script>
 import ProductForm from "~/components/admin/ProductForm";
 export default {
+  components: {ProductForm},
   layout: 'admin',
-  components: {ProductForm}
 }
 </script>
 

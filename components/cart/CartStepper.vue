@@ -115,8 +115,10 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch("initOrders")
-    this.$store.dispatch("initLocation")
+    if (process.client) {
+      this.$store.dispatch("initOrders")
+      this.$store.dispatch("initLocation")
+    }
   },
   methods: {
     nextStep() {

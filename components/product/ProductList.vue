@@ -1,11 +1,11 @@
 <template>
     <v-row>
-      <v-col cols="12" md="4" v-for="(product , index) in products" :key="index">
+      <v-col cols="12" lg="4" xl="3" v-for="(product , index) in products" :key="index">
         <nuxt-link class="pro-link" :to="isAdmin ? `/admin/${product.id}` : `/products/${product.id}`">
           <product-card
             :id="product.id"
-            :image="product.images[0]"
-            :title="product.title"
+            :image="product.thumbnail_url"
+            :title="product.name"
             :price="product.price"
             :is-admin="isAdmin"
             @deleteProduct="deleteProduct(index)"

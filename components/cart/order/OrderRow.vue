@@ -3,7 +3,7 @@
     <div v-for="(order,index) in orders" :key="order.id">
       <v-row id="cart">
         <v-col cols="2">
-          <img :src="order.images[0]"/>
+          <img :src="order.image"/>
         </v-col>
         <v-col cols="9" class="inform">
           <p>{{ order.title }}</p>

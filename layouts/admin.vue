@@ -15,7 +15,7 @@ import SideNavigation from "~/components/navigation/SideNavigation";
 import TopNavigation from "~/components/navigation/TopNavigation";
 export default {
   name: "admin",
-  middleware: ['checkAuth' , 'auth'],
+  middleware: 'auth',
   components: {TopNavigation, SideNavigation},
   data() {
     return {
@@ -23,20 +23,23 @@ export default {
         {
           icon: 'mdi-storefront-outline',
           title: 'مدیریت محصولات',
-          to: '/admin/#',
+          to: '/admin',
         },
         {
           icon: 'mdi-package-variant-closed-plus',
           title: 'افزودن محصول جدید',
           to: '/admin/new-product',
         },
+        {
+          icon: 'mdi-storefront',
+          title: 'ورود به فروشگاه',
+          to: '/',
+        },
       ],
     }
   },
   created() {
-    if (process.client){
       this.$store.dispatch("initProducts")
-    }
   }
 }
 </script>
