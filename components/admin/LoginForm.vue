@@ -3,7 +3,7 @@
     <v-flex sm12 md6 offset-md3>
       <v-card elevation="4" light tag="section">
         <v-card-title>
-          <h3 class="headline">
+          <h3>
             ورود ادمین سایت
           </h3>
         </v-card-title>
@@ -69,15 +69,15 @@ export default {
     return {
       valid: true,
       snackbar: false,
-      password: '',
-      username: '',
+      username: '09140912025',
+      password: 'azad3256',
       error: '',
       inputRules: [v => !!v || 'پر کردن این فیلد الزامی است',],
     }
   },
   methods: {
     async login() {
-      this.$refs.form.validate()
+      this.valid = this.$refs.form.validate()
       if(this.valid) {
         try {
           const response = await this.$axios.$post("/auth/login/admin", {

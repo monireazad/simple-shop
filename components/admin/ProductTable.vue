@@ -79,6 +79,7 @@ export default {
       },
       {text: 'عنوان محصول', sortable: false, value: 'name'},
       {text: 'قیمت(تومان)', value: 'price'},
+      {text: 'موجودی انبار', value: 'stock'},
       {
         text: '',
         value: 'actions',
@@ -89,6 +90,7 @@ export default {
     dialog: false,
     dialogDelete: false,
     editedIndex: -1,
+    editedItem: {}
   }),
 
   watch: {
@@ -101,11 +103,12 @@ export default {
       this.$router.push(`/admin/${item.id}`)
     },
     deleteItem (item) {
-      this.$store.dispatch("removeProduct" , item)
       this.editedIndex = this.products.indexOf(item)
+      this.editedItem = item
       this.dialogDelete = true
     },
     deleteItemConfirm () {
+      this.$store.dispatch("removeProduct" , this.editedItem)
       this.products.splice(this.editedIndex, 1)
       this.closeDelete()
     },

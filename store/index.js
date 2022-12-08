@@ -4,6 +4,7 @@ export default () => {
   return new Vuex.Store({
     state: {
       products: [],
+      categories: [],
       orders: [],
       location: {},
       finalOrders: [],
@@ -12,6 +13,10 @@ export default () => {
     mutations: {
       getProducts(state , {data}){
         state.products = data
+      },
+
+      getCategories(state , data) {
+        state.categories = data
       },
 
       setOrders(state, orders) {
@@ -33,17 +38,18 @@ export default () => {
 
     actions: {
       async nuxtServerInit({ commit }){
+        const {data} = await this.$axios.get('/shop/categories')
+        commit('getCategories' , data.entity)
       },
 
       async initProducts({ commit }) {
-        const data = await this.$axios.$get('/products')
+        const data = await this.$axios.$get('/products/')
         commit('getProducts' , data.entity)
       },
 
       async removeProduct({commit , state}, removeItem) {
         const response = await this.$axios.$delete(`shop/products/${removeItem.id}`)
       },
-
 
       //--------------
       setOrders({commit, state}, product) {

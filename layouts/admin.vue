@@ -21,7 +21,7 @@ export default {
     return {
       items: [
         {
-          icon: 'mdi-storefront-outline',
+          icon: 'mdi-package-variant',
           title: 'مدیریت محصولات',
           to: '/admin',
         },
@@ -29,6 +29,11 @@ export default {
           icon: 'mdi-package-variant-closed-plus',
           title: 'افزودن محصول جدید',
           to: '/admin/new-product',
+        },
+        {
+          icon: 'mdi-account',
+          title: 'اطلاعات پروفایل',
+          to: '/admin/profile',
         },
         {
           icon: 'mdi-storefront',
