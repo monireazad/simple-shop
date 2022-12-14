@@ -166,11 +166,9 @@ export default {
     onCancel() {
       this.$router.push("/admin")
     },
-    setPhoto(files) {
-      for (const file in files) {
-        this.newProduct.images.push(`/images/${files[file].name}`)
-      }
-    }, 
+    setPhoto(event) {
+      console.log(event)
+    },
   },
 
   computed: {
