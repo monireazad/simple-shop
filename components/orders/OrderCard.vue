@@ -49,7 +49,7 @@
           <v-row>
             <v-col cols="12">
               <div class="total-price d-flex justify-center">
-                <h4 class="mx-3">قیمت کل سفارش:
+                <h4 class="mx-3">مبلغ کل سفارش:
                   {{totalPrice.toLocaleString()}} تومان
                 </h4>
               </div>

@@ -73,6 +73,17 @@
           مرحله بعد
         </v-btn>
 
+        <v-dialog v-model="dialog" max-width="400px">
+          <v-card>
+            <v-card-title class="text-h5">سفارش شما با موفقیت ثبت شد.</v-card-title>
+            <v-spacer></v-spacer>
+            <v-card-actions>
+              <v-btn color="blue darken-1" text @click="onSubmit">تایید</v-btn>
+              <v-spacer></v-spacer>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
         <v-btn
           v-if="isLocation"
           text
@@ -98,6 +109,7 @@ export default {
   data() {
     return {
       e1: 1,
+      dialog: false,
     }
   },
   computed: {
@@ -122,9 +134,13 @@ export default {
   },
   methods: {
     nextStep() {
-      this.$router.push("/orders")
+      this.dialog = true
       this.$store.dispatch('setFinalOrders')
     },
+    onSubmit() {
+      this.dialog = false
+      this.$router.push('/products')
+    }
   },
 }
 </script>

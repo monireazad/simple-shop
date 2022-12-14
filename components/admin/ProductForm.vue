@@ -6,12 +6,14 @@
           color="primary"
           large
           class="mx-2"
+          :disabled="loading"
           @click="onSave()">
           ثبت
         </v-btn>
         <v-btn
           color="primary"
           large
+          :disabled="loading"
           @click="onCancel()">
           لغو
         </v-btn>
@@ -24,7 +26,14 @@
         class="ma-3">
         <v-row>
           <v-col cols="12" md="8">
-            <v-card class="pa-7" elevation="4" light tag="section">
+            <v-card class="pa-7" elevation="4" light tag="section" :loading="loading">
+              <template slot="progress">
+                <v-progress-linear
+                  color="light-green lighten-4"
+                  height="5"
+                  indeterminate
+                ></v-progress-linear>
+              </template>
               <v-text-field
                 type="text"
                 :rules="inputRules"
@@ -41,7 +50,7 @@
                 multiple
                 chips
                 prepend-icon="mdi-camera"
-                @change="savePhoto($event)"
+                @change="setPhoto($event)"
               ></v-file-input>
 
               <v-row>
@@ -52,7 +61,23 @@
             </v-card>
           </v-col>
           <v-col cols="12" md="4">
-            <v-card class="pa-7" elevation="4" light tag="section">
+            <v-card class="pa-7" elevation="4" light tag="section" :loading="loading">
+              <template slot="progress">
+                <v-progress-linear
+                  color="light-green lighten-4"
+                  height="5"
+                  indeterminate
+                ></v-progress-linear>
+              </template>
+
+              <v-select
+                :rules="inputRules"
+                :items="status"
+                item-text="name"
+                v-model="productStatus"
+                label="وضعیت"
+              ></v-select>
+
               <v-text-field
                 type="text"
                 :rules="inputRules"
@@ -67,7 +92,7 @@
                 :rules="inputRules"
                 :items="categories"
                 item-text="name"
-                v-model="newProduct.category.name"
+                v-model="productCategory"
                 label="دسته بندی"
               ></v-select>
 
@@ -82,8 +107,6 @@
           </v-col>
         </v-row>
       </v-form>
-
-
     </div>
   </div>
 </template>
@@ -110,39 +133,57 @@ export default {
   data() {
     return {
       valid: true,
+      loading: false,
       newProduct: {
         orderNum: 1,
-        category: {},
         stock: 0,
         price: 0,
+        status: 'فعال',
       },
+      status: ['فعال', 'غیر فعال'],
       files: [],
       inputRules: [v => !!v || 'پر کردن این فیلد الزامی است',],
     }
   },
 
   methods: {
-    onSave() {
+    async onSave() {
       this.valid = this.$refs.form.validate()
       if (this.valid) {
+        // this.newProduct.prices = []
+        // this.newProduct.thumbnail_id = this.newProduct.thumbnail_file_id
+
+        this.loading = true
+        const response = await this.$axios.patch(`/shop/products/${this.newProduct.id}`, this.newProduct)
+        this.loading = false
+
+
         // this.$store.dispatch("setProducts", this.newProduct)
         // this.$router.push("/admin")
-        console.log('product save')
+
       }
     },
     onCancel() {
       this.$router.push("/admin")
     },
-    savePhoto(files) {
+    setPhoto(files) {
       for (const file in files) {
         this.newProduct.images.push(`/images/${files[file].name}`)
       }
-    },
+    }, 
   },
 
   computed: {
     categories() {
       return this.$store.state.categories
+    },
+    productCategory() {
+      if (this.product) {
+        return this.categories.find(x => x.id === this.newProduct.category_id).name
+      }
+    },
+    productStatus() {
+      return this.newProduct.status === 1 ? 'فعال' : 'غیر فعال'
     },
     formattedPrice() {
       return `${this.newProduct.price.toLocaleString()} تومان`

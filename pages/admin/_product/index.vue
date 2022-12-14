@@ -11,11 +11,11 @@ export default {
   components: {ProductForm},
   computed: {
     product() {
-      const index = this.$store.state.products.findIndex(
+      const index = this.$store.state.adminProducts.findIndex(
         (item) => item.id == this.$nuxt.context.params.product
       )
       if (index > -1){
-        return this.$store.state.products[index]
+        return this.$store.state.adminProducts[index]
       }
     }
   },

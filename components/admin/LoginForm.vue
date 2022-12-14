@@ -85,12 +85,12 @@ export default {
             password: this.password
           })
           this.$auth.setUserToken(response.token)
-          this.$router.push('/')
+          await this.$router.push('/')
+          await this.$store.dispatch('initCategory')
         } catch (e) {
           this.snackbar = true
           this.error = e.response.data.message
         }
-
       }
     }
   }

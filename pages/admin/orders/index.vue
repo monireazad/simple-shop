@@ -22,11 +22,8 @@
 import OrderCard from "~/components/orders/OrderCard";
 export default {
   components: {OrderCard},
-  data() {
-    return{
-      isAdmin: false
-    }
-  },
+  layout: 'admin',
+
   created() {
     if (process.client) {
       this.$store.dispatch("initFinalOrders")

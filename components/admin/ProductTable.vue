@@ -5,11 +5,19 @@
       :items="products"
       :hide-default-footer="true"
       class="elevation-1"
-
+      :loading="loading"
       @page-count="pageCount = $event"
       :page.sync="page"
       :items-per-page="6"
     >
+      <template slot="progress">
+        <v-progress-linear
+          color="light-green lighten-4"
+          height="5"
+          indeterminate
+        ></v-progress-linear>
+      </template>
+
       <template v-slot:top>
         <v-dialog v-model="dialogDelete" max-width="400px">
           <v-card>
@@ -32,6 +40,14 @@
         />
       </template>
 
+      <template v-slot:item.status="{ item }">
+        {{item.status === 1 ? 'فعال' : 'غیر فعال'}}
+      </template>
+
+      <template v-slot:item.category="{ item }">
+        {{categories.find(x => x.id === item.category_id).name}}
+      </template>
+
       <template v-slot:item.price="{ item }">
         {{ item.price.toLocaleString() }}
       </template>
@@ -40,6 +56,7 @@
         <v-icon
           color="red darken-3"
           @click="deleteItem(item)"
+          :disabled="loading"
         >
           mdi-delete
         </v-icon>
@@ -70,6 +87,7 @@ export default {
   data: () => ({
     page: 1,
     pageCount: 0,
+    loading: false,
     headers: [
       {
         text: '',
@@ -78,6 +96,8 @@ export default {
         value: 'thumbnail_url',
       },
       {text: 'عنوان محصول', sortable: false, value: 'name'},
+      {text: 'وضعیت', value: 'status'},
+      {text: 'دسته بندی', sortable: false, value: 'category'},
       {text: 'قیمت(تومان)', value: 'price'},
       {text: 'موجودی انبار', value: 'stock'},
       {
@@ -102,13 +122,16 @@ export default {
     editProduct(item) {
       this.$router.push(`/admin/${item.id}`)
     },
+
     deleteItem (item) {
       this.editedIndex = this.products.indexOf(item)
       this.editedItem = item
       this.dialogDelete = true
     },
-    deleteItemConfirm () {
-      this.$store.dispatch("removeProduct" , this.editedItem)
+    async deleteItemConfirm () {
+      this.loading = true;
+      const response = await this.$axios.$delete(`shop/products/${this.editedItem.id}`)
+      this.loading = false
       this.products.splice(this.editedIndex, 1)
       this.closeDelete()
     },
@@ -119,6 +142,11 @@ export default {
       })
     },
   },
+  computed: {
+    categories() {
+      return this.$store.state.categories
+    },
+  }
 
 }
 </script>

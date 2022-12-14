@@ -6,7 +6,7 @@
 
 <script>
 import OrderRow from "~/components/cart/order/OrderRow";
-import orders from "~/pages/orders";
+import orders from "~/pages/admin/orders";
 
 export default {
   name: "OrdersSheet",

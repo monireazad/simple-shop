@@ -8,11 +8,16 @@ export default () => {
       orders: [],
       location: {},
       finalOrders: [],
+      adminProducts: [],
     },
 
     mutations: {
       getProducts(state , {data}){
         state.products = data
+      },
+
+      getAdminProducts(state , {data}){
+        state.adminProducts = data
       },
 
       getCategories(state , data) {
@@ -37,18 +42,26 @@ export default () => {
     },
 
     actions: {
-      async nuxtServerInit({ commit }){
-        const {data} = await this.$axios.get('/shop/categories')
-        commit('getCategories' , data.entity)
+      async nuxtServerInit({ commit , state}){
+        const products = await this.$axios.$get('/products')
+        commit('getProducts' , products.entity)
+        if (state.auth.loggedIn) {
+          const {data} = await this.$axios.get('/shop/categories')
+          commit('getCategories', data.entity)
+
+          const response = await this.$axios.get('/shop/products')
+          commit('getAdminProducts', response)
+        }
       },
 
-      async initProducts({ commit }) {
-        const data = await this.$axios.$get('/products/')
-        commit('getProducts' , data.entity)
-      },
 
       async removeProduct({commit , state}, removeItem) {
         const response = await this.$axios.$delete(`shop/products/${removeItem.id}`)
+      },
+
+      async initCategory({commit}) {
+        const {data} = await this.$axios.get('/shop/categories')
+        commit('getCategories', data.entity)
       },
 
       //--------------

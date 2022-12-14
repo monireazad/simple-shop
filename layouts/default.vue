@@ -30,18 +30,13 @@ export default {
           title: 'سبد خرید',
           to: '/cart',
         },
-        {
-          icon: 'mdi-order-bool-descending-variant',
-          title: 'سفارشات',
-          to: '/orders',
-        },
+
       ],
     }
   },
   created() {
     if (process.client){
       this.$store.dispatch("initOrders")
-      this.$store.dispatch("initProducts")
     }
   }
 }

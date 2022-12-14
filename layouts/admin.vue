@@ -31,6 +31,11 @@ export default {
           to: '/admin/new-product',
         },
         {
+          icon: 'mdi-order-bool-descending-variant',
+          title: 'سفارشات',
+          to: '/admin/orders',
+        },
+        {
           icon: 'mdi-account',
           title: 'اطلاعات پروفایل',
           to: '/admin/profile',
@@ -43,9 +48,6 @@ export default {
       ],
     }
   },
-  created() {
-      this.$store.dispatch("initProducts")
-  }
 }
 </script>
 
