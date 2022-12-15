@@ -16,11 +16,18 @@ export default {
   layout: 'admin',
   middleware: ['auth'],
 
-  computed: {
-    listOfProduct() {
-      return this.$store.state.adminProducts
+  async asyncData({params , $axios}) {
+    const {data} = await $axios.get('/shop/products')
+    return {
+      listOfProduct: data
     }
-  },
+  } ,
+
+  // computed: {
+  //   listOfProduct() {
+  //     return this.$store.state.adminProducts
+  //   }
+  // },
 
 }
 </script>

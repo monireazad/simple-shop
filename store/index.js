@@ -56,7 +56,7 @@ export default () => {
 
 
       async removeProduct({commit , state}, removeItem) {
-        const response = await this.$axios.$delete(`shop/products/${removeItem.id}`)
+        await this.$axios.$delete(`shop/products/${removeItem.id}`)
       },
 
       async initCategory({commit}) {
@@ -140,5 +140,7 @@ export default () => {
         return state.auth.user
       }
     },
+
+    modules: {},
   })
 }

@@ -6,17 +6,16 @@
 
 <script>
 import ProductForm from "~/components/admin/ProductForm";
+import axios from 'axios'
 export default {
   layout: 'admin',
   components: {ProductForm},
-  computed: {
-    product() {
-      const index = this.$store.state.adminProducts.findIndex(
-        (item) => item.id == this.$nuxt.context.params.product
-      )
-      if (index > -1){
-        return this.$store.state.adminProducts[index]
-      }
+
+  async asyncData({params , $axios}) {
+    const id = params.product
+    const { data } = await $axios.get(`https://monireh.faryadresan.ir/api/v1/shop/products/${id}`)
+    return {
+      product: data.entity
     }
   },
 }
